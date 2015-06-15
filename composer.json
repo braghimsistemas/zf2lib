@@ -1,0 +1,21 @@
+{
+    "name": "braghimsistemas/zf2lib",
+    "type": "library",
+    "description": "Biblioteca Braghim Sistemas",
+    "keywords": ["zend","zend2"],
+    "homepage": "https://github.com/braghimsistemas/zf2lib",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco A. Braghim",
+            "email": "braghim.sistemas@gmail.com",
+            "homepage": "http://braghim.com.br",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
+
+
