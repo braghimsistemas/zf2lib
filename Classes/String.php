@@ -1,6 +1,6 @@
 <?php
 
-namespace BraghimSistemas\Util;
+namespace BraghimSistemas\Zf2lib\Classes;
 
 class String {
 

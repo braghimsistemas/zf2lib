@@ -1,13 +1,8 @@
 <?php
 namespace BraghimSistemas\Zf2lib\Controller;
 
-use Application\Model\SchemaPublic\ActionBusiness;
-use BraghimSistemas\Zf2lib\AccessControl;
+use BraghimSistemas\Zf2lib\Classes\Firephp;
 use BraghimSistemas\Zf2lib\Enum;
-use BraghimSistemas\Zf2lib\Firephp;
-use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Action;
-use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Role;
-use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\User;
 use Exception;
 use Zend\Http\Headers;
 use Zend\Http\Response;
@@ -28,6 +23,12 @@ abstract class AbstractController extends AbstractActionController
 {
 	const ITEM_PER_PAGE = 20;
 	const ITEM_PER_PAGE_100 = 100;
+	
+	/**
+	 * Config
+	 */
+	protected $accessControl;
+	protected $roleDefault;
 	
 	/**
 	 * Variaveis que serao visiveis na view
@@ -65,9 +66,15 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	public function dispatch(RequestInterface $request, ResponseInterface $response = null)
 	{
+		// Classe AccessControl do projeto
+		$acClass = $this->accessControl;
+		if (!$acClass) {
+			throw new Exception("A classe 'AccessControl' não foi definida no projeto");
+		}
+		
 		// Gerenciamento de permissao de acesso
-		$accessControl = AccessControl::getInstance($this->getModuleName());
-		$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : Role::VISITANTE);
+		$accessControl = $acClass::getInstance($this->getModuleName());
+		$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : $this->roleDefault);
 		
 		// Verifica se usuario tem acesso ao controlador e acao requisitado
 		if (!$this->checkAccess())
@@ -183,8 +190,11 @@ abstract class AbstractController extends AbstractActionController
 				$permission['action'] = Action::ACTION_READ;
 			}
 			
+			// Classe AccessControl do projeto
+			$acClass = $this->accessControl;
+			
 			// Se nao tiver acesso redireciona para login
-			if (AccessControl::allowed(implode('.', $permission))) {
+			if ($acClass::allowed(implode('.', $permission))) {
 				$result = true;
 			}
 		}
@@ -197,7 +207,10 @@ abstract class AbstractController extends AbstractActionController
 	 * @return User
 	 */
 	protected function getLogin() {
-		return AccessControl::getInstance()->getLogin();
+		// Classe AccessControl do projeto
+		$acClass = $this->accessControl;
+		
+		return $acClass::getInstance()->getLogin();
 	}
 
 	/**
@@ -518,7 +531,7 @@ abstract class AbstractController extends AbstractActionController
 
 		return $renderer->render($view);
 	}
-
+	
 	/**
 	 * Garantir que os controladores terao implementado os metodos abaixo, para evitar que, por exemplo,
 	 * um use o nome createAction e outro use newAction para o mesmo tipo de acao do sistema.
