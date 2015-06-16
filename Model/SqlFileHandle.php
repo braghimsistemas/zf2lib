@@ -1,5 +1,5 @@
 <?php
-namespace Braghim\Zf2lib\Model;
+namespace BraghimSistemas\Zf2lib\Model;
 
 use Zend\Paginator\Paginator;
 
@@ -24,7 +24,7 @@ class SqlFileHandle
 	 * Adiciona varios parametros de consulta.
 	 * 
 	 * @param array $params
-	 * @return \Braghim\Zf2lib\Model\SqlFileHandle
+	 * @return \BraghimSistemas\Zf2lib\Model\SqlFileHandle
 	 */
 	public function setParams(array $params) {
 		foreach ($params as $name => $value) {
@@ -49,7 +49,7 @@ class SqlFileHandle
 	 * @param type $value
 	 * @param type $default
 	 * @param type $treat
-	 * @return \Braghim\Zf2lib\Model\SqlFileHandle
+	 * @return \BraghimSistemas\Zf2lib\Model\SqlFileHandle
 	 */
 	public function addParam($name, $value = null, $default = null, $treat = null)
 	{
@@ -71,7 +71,7 @@ class SqlFileHandle
 	 * Substitui diretamente na query o parametro para NULL.
 	 * 
 	 * @param string $name
-	 * @return \Braghim\Zf2lib\Model\SqlFileHandle
+	 * @return \BraghimSistemas\Zf2lib\Model\SqlFileHandle
 	 */
 	public function addParamNull($name)
 	{
@@ -101,7 +101,7 @@ class SqlFileHandle
 	 * Adiciona parametro de OFFSET na query.
 	 * 
 	 * @param int $offset
-	 * @return \Braghim\Zf2lib\Model\SqlFileHandle
+	 * @return \BraghimSistemas\Zf2lib\Model\SqlFileHandle
 	 */
 	public function offset($offset) {
 		if (!preg_match("/(OFFSET)(\s+)?\d+/i", $this->query)) {
@@ -114,7 +114,7 @@ class SqlFileHandle
 	 * Adiciona parametro de LIMIT na query.
 	 * 
 	 * @param type $limit
-	 * @return \Braghim\Zf2lib\Model\SqlFileHandle
+	 * @return \BraghimSistemas\Zf2lib\Model\SqlFileHandle
 	 */
 	public function limit($limit) {
 		if (!preg_match("/(LIMIT)(\s+)?\d+/i", $this->query)) {

@@ -1,10 +1,10 @@
 <?php
-namespace Braghim\Zf2lib\Model;
+namespace BraghimSistemas\Zf2lib\Model;
 
-use Braghim\Zf2lib\Model\Entity\DbBraghim\SchemaPublic\Status;
-use Braghim\Zf2lib\Model\AbstractEntity;
-use Braghim\Zf2lib\Model\SqlFileHandle;
-use Braghim\Zf2lib\Zendfix\SequenceFeatureFix;
+use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Status;
+use BraghimSistemas\Zf2lib\Model\AbstractEntity;
+use BraghimSistemas\Zf2lib\Model\SqlFileHandle;
+use BraghimSistemas\Zf2lib\Zendfix\SequenceFeatureFix;
 use Exception;
 use ReflectionClass;
 use Zend\Db\Adapter\Adapter;
@@ -37,7 +37,7 @@ abstract class AbstractGateway
 		}
 		
 		// Namespace identificado da entidade
-		$entityNamespace = 'Braghim\Zf2lib\Model\Entity\Db'.ucfirst(strtolower(self::$database)).'\\'.current($matches);
+		$entityNamespace = 'BraghimSistemas\Zf2lib\Model\Entity\Db'.ucfirst(strtolower(self::$database)).'\\'.current($matches);
 		
 		// Vamos encontrar agora o nome da classe da entidade
 		$nameParts = explode("\\", get_class($this));

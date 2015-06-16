@@ -1,7 +1,7 @@
 <?php
-namespace Braghim\Zf2lib\Model\Entity\DbBraghim\SchemaPublic;
+namespace BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic;
 
-use Braghim\Zf2lib\Model\AbstractEntity;
+use BraghimSistemas\Zf2lib\Model\AbstractEntity;
 
 class User extends AbstractEntity
 {

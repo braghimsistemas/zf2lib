@@ -1,6 +1,6 @@
 <?php
 
-namespace Braghim\Zf2lib\Model;
+namespace BraghimSistemas\Zf2lib\Model;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 

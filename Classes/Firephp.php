@@ -1,5 +1,5 @@
 <?php
-namespace Braghim\Zf2lib;
+namespace BraghimSistemas\Zf2lib;
 
 use Zend\Log\Logger;
 use Zend\Log\Writer\FirePhp as WriterFirePhp;

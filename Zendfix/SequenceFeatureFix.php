@@ -1,5 +1,5 @@
 <?php
-namespace Braghim\Zf2lib\Zendfix;
+namespace BraghimSistemas\Zf2lib\Zendfix;
 
 use Zend\Db\TableGateway\Feature\SequenceFeature;
 

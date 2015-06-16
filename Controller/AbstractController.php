@@ -1,13 +1,13 @@
 <?php
-namespace Braghim\Zf2lib\Controller;
+namespace BraghimSistemas\Zf2lib\Controller;
 
 use Application\Model\SchemaPublic\ActionBusiness;
-use Braghim\Zf2lib\AccessControl;
-use Braghim\Zf2lib\Enum;
-use Braghim\Zf2lib\Firephp;
-use Braghim\Zf2lib\Model\Entity\DbBraghim\SchemaPublic\Action;
-use Braghim\Zf2lib\Model\Entity\DbBraghim\SchemaPublic\Role;
-use Braghim\Zf2lib\Model\Entity\DbBraghim\SchemaPublic\User;
+use BraghimSistemas\Zf2lib\AccessControl;
+use BraghimSistemas\Zf2lib\Enum;
+use BraghimSistemas\Zf2lib\Firephp;
+use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Action;
+use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Role;
+use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\User;
 use Exception;
 use Zend\Http\Headers;
 use Zend\Http\Response;

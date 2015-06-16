@@ -1,5 +1,5 @@
 <?php
-namespace Braghim\Zf2lib\Model;
+namespace BraghimSistemas\Zf2lib\Model;
 
 class EntityListPrototype
 {

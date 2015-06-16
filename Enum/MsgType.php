@@ -1,5 +1,5 @@
 <?php
-namespace Braghim\Zf2lib\Enum;
+namespace BraghimSistemas\Zf2lib\Enum;
 
 class MsgType
 {
