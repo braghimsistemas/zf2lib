@@ -1,7 +1,7 @@
 <?php
 namespace BraghimSistemas\Zf2lib\Model;
 
-use BraghimSistemas\Zf2lib\Model\Entity\DbBraghimSistemas\SchemaPublic\Status;
+use BraghimSistemas\Zf2lib\Classes\Config;
 use BraghimSistemas\Zf2lib\Model\AbstractEntity;
 use BraghimSistemas\Zf2lib\Model\SqlFileHandle;
 use BraghimSistemas\Zf2lib\Zendfix\SequenceFeatureFix;
@@ -37,7 +37,7 @@ abstract class AbstractGateway
 		}
 		
 		// Namespace identificado da entidade
-		$entityNamespace = 'BraghimSistemas\Zf2lib\Model\Entity\Db'.ucfirst(strtolower(self::$database)).'\\'.current($matches);
+		$entityNamespace = Config::getZf2libConfig('entityNamespace') . '\Db'.ucfirst(strtolower(self::$database)).'\\'.current($matches);
 		
 		// Vamos encontrar agora o nome da classe da entidade
 		$nameParts = explode("\\", get_class($this));
@@ -163,7 +163,7 @@ abstract class AbstractGateway
 		// Recupera o select e adiciona clausula onde somente
 		// os registros diferentes de 'excluido' devem ser retornados
 		$select = $this->getDb()->getSql()->select();
-		$select->where(array('status <> ?' => Status::EXCLUIDO));
+		$select->where(array('status <> ?' => Config::getZf2libConfig('statusExcluido')));
 		
 		// Efetua consulta setando os pks (uma tabela pode ter dois pks)
 		// Por ondem de chegada, ou seja, o metodo deve receber os ids
@@ -276,7 +276,7 @@ abstract class AbstractGateway
 	{
 		$row = call_user_func_array(array($this, 'get'), func_get_args());
 		if ($row) {
-			$row->setStatus(Status::EXCLUIDO);
+			$row->setStatus(Config::getZf2libConfig('statusExcluido'));
 			return $this->save(self::UPDATE, $row);
 		}
 		return false;

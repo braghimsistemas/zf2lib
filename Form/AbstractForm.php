@@ -1,5 +1,5 @@
 <?php
-namespace BraghimSistemas\Zf2lib;
+namespace BraghimSistemas\Zf2lib\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;

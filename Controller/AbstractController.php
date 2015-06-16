@@ -3,6 +3,8 @@ namespace BraghimSistemas\Zf2lib\Controller;
 
 use BraghimSistemas\Zf2lib\Classes\Firephp;
 use BraghimSistemas\Zf2lib\Enum;
+use BraghimSistemas\Zf2lib\Classes\AccessControl;
+use BraghimSistemas\Zf2lib\Classes\Config;
 use Exception;
 use Zend\Http\Headers;
 use Zend\Http\Response;
@@ -23,12 +25,6 @@ abstract class AbstractController extends AbstractActionController
 {
 	const ITEM_PER_PAGE = 20;
 	const ITEM_PER_PAGE_100 = 100;
-	
-	/**
-	 * Config
-	 */
-	protected $accessControl;
-	protected $roleDefault;
 	
 	/**
 	 * Variaveis que serao visiveis na view
@@ -66,15 +62,9 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	public function dispatch(RequestInterface $request, ResponseInterface $response = null)
 	{
-		// Classe AccessControl do projeto
-		$acClass = $this->accessControl;
-		if (!$acClass) {
-			throw new Exception("A classe 'AccessControl' não foi definida no projeto");
-		}
-		
 		// Gerenciamento de permissao de acesso
-		$accessControl = $acClass::getInstance($this->getModuleName());
-		$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : $this->roleDefault);
+		$accessControl = AccessControl::getInstance($this->getModuleName());
+		$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : Config::getZf2libConfig('roleDefault'));
 		
 		// Verifica se usuario tem acesso ao controlador e acao requisitado
 		if (!$this->checkAccess())
@@ -184,17 +174,15 @@ abstract class AbstractController extends AbstractActionController
 		} else {
 			// Quando a acao nao existir na tabela action
 			// assumimos que ela eh uma acao de leitura (read)
-			$actionBO = new ActionBusiness();
+			$actionBoClass = Config::getZf2libConfig('actionBusinessClass');
+			$actionBO = new $actionBoClass();
 			$action = $actionBO->get($permission['action']);
 			if (!$action) {
-				$permission['action'] = Action::ACTION_READ;
+				$permission['action'] = Config::getZf2libConfig('actionRead');
 			}
 			
-			// Classe AccessControl do projeto
-			$acClass = $this->accessControl;
-			
 			// Se nao tiver acesso redireciona para login
-			if ($acClass::allowed(implode('.', $permission))) {
+			if (AccessControl::allowed(implode('.', $permission))) {
 				$result = true;
 			}
 		}
@@ -207,10 +195,7 @@ abstract class AbstractController extends AbstractActionController
 	 * @return User
 	 */
 	protected function getLogin() {
-		// Classe AccessControl do projeto
-		$acClass = $this->accessControl;
-		
-		return $acClass::getInstance()->getLogin();
+		return AccessControl::getInstance()->getLogin();
 	}
 
 	/**
