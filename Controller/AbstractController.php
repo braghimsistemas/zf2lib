@@ -64,7 +64,10 @@ abstract class AbstractController extends AbstractActionController
 	{
 		// Gerenciamento de permissao de acesso
 		$accessControl = AccessControl::getInstance($this->getModuleName());
-		$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : Config::getZf2libConfig('roleDefault'));
+		$accessControl->setupPermissions(
+			($this->getLogin()) ? $this->getLogin()->getFkRole() : Config::getZf2libConfig('roleDefault'),
+			$this->getModuleName()
+		);
 		
 		// Verifica se usuario tem acesso ao controlador e acao requisitado
 		if (!$this->checkAccess())
@@ -174,7 +177,7 @@ abstract class AbstractController extends AbstractActionController
 		} else {
 			// Quando a acao nao existir na tabela action
 			// assumimos que ela eh uma acao de leitura (read)
-			$actionBoClass = Config::getZf2libConfig('actionBusinessClass');
+			$actionBoClass = Config::getZf2libConfig('actionBusinessClass', $this->getModuleName());
 			$actionBO = new $actionBoClass();
 			$action = $actionBO->get($permission['action']);
 			if (!$action) {

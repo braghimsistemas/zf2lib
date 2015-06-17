@@ -52,13 +52,13 @@ class AccessControl
 	 * 
 	 * @param type $userRole
 	 */
-	public function setupPermissions($userRole)
+	public function setupPermissions($userRole, $module)
 	{
 		// Primeiro role, referente diretamente ao cargo do usuario.
 		$mainRole = new Role($userRole);
 		
 		// Permissoes para o cargo principal
-		$permissionBoClass = Config::getZf2libConfig('permissionBusinessClass');
+		$permissionBoClass = Config::getZf2libConfig('permissionBusinessClass', $module);
 		$permissionBO = new $permissionBoClass();
 		
 		$permissions = $permissionBO->getListByRole($userRole);
@@ -120,13 +120,14 @@ class AccessControl
 	 * Verifica se o cargo do usuário logado é SUPERIOR ou igual ao cargo requerido (parametro).
 	 * 
 	 * @param type $roleId
+	 * @param string $module
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public static function upperHierarchy($roleId)
+	public static function upperHierarchy($roleId, $module)
 	{
 		// Cargo usado para testar
-		$roleBoClass = Config::getZf2libConfig('roleBusinessClass');
+		$roleBoClass = Config::getZf2libConfig('roleBusinessClass', $module);
 		$roleBO = new $roleBoClass();
 		$role = $roleBO->get($roleId);
 		if (!$role) {
@@ -149,13 +150,14 @@ class AccessControl
 	 * Verifica se o cargo do usuário logado é INFERIOR ou igual ao cargo requerido (parametro).
 	 * 
 	 * @param type $roleId
+	 * @param string $module
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public static function lowerHierarchy($roleId)
+	public static function lowerHierarchy($roleId, $module)
 	{
 		// Cargo usado para testar
-		$roleBoClass = Config::getZf2libConfig('roleBusinessClass');
+		$roleBoClass = Config::getZf2libConfig('roleBusinessClass', $module);
 		$roleBO = new $roleBoClass();
 		$role = $roleBO->get($roleId);
 		if (!$role) {
