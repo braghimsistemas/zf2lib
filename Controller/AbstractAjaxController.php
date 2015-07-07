@@ -1,13 +1,10 @@
 <?php
 
-namespace Braghim\Zf2lib\Controller;
+namespace BraghimSistemas\Zf2lib\Controller;
 
-use Ajax\Model\SchemaPublic\ActionBusiness;
-use Braghim\Zf2lib\AccessControl;
-use Braghim\Zf2lib\Enum\MsgType;
-use Braghim\Zf2lib\Model\Entity\Db041print\SchemaPublic\Action;
-use Braghim\Zf2lib\Model\Entity\Db041print\SchemaPublic\Role;
-use Braghim\Zf2lib\Model\Entity\Db041print\SchemaPublic\User;
+use BraghimSistemas\Zf2lib\Classes\AccessControl;
+use BraghimSistemas\Zf2lib\Classes\Config;
+use BraghimSistemas\Zf2lib\Enum\MsgType;
 use Zend\Http\PhpEnvironment\Response as EnvResponse;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -16,7 +13,6 @@ use Zend\Stdlib\RequestInterface;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface;
 use Zend\Stdlib\ResponseInterface as Response;
-use Zend\Validator\InArray;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -87,15 +83,7 @@ abstract class AbstractAjaxController extends AbstractActionController
 		
 		// Validação do parametro MODULO
 		$module = $request->getQuery('module', 'application');
-		
-		$this->validate('module', $module, array('NotEmpty', 'InArray'), array(
-			'InArray' => array(
-				'haystack' => array('clientes', 'application'),
-				'messages' => array(
-					InArray::NOT_IN_ARRAY => "Verifique o parâmetro 'module'"
-				)
-			)
-		));
+		$this->validate('module', $module, array('NotEmpty'));
 		
 		$session = new Session(self::ACCESS_CONTROL_NAMESPACE);
 
@@ -113,7 +101,10 @@ abstract class AbstractAjaxController extends AbstractActionController
 			
 			// Puxa configuracoes de acessos do banco de dados
 			$accessControl = AccessControl::getInstance($module);
-			$accessControl->setupPermissions(($this->getLogin()) ? $this->getLogin()->getFkRole() : Role::VISITANTE);
+			$accessControl->setupPermissions(
+				($this->getLogin()) ? $this->getLogin()->getFkRole() : Config::getZf2libConfig('roleDefault'),
+				$module
+			);
 
 			// Setor do sistema
 			$permission = array(
@@ -124,10 +115,11 @@ abstract class AbstractAjaxController extends AbstractActionController
 			
 			// Quando a acao nao existir na tabela action
 			// assumimos que ela eh uma acao de leitura (read)
-			$actionBO = new ActionBusiness();
+			$actionBOClass = Config::getZf2libConfig('actionBusinessClass', $module);
+			$actionBO = new $actionBOClass();
 			$action = $actionBO->get($permission['action']);
 			if (!$action) {
-				$permission['action'] = Action::ACTION_READ;
+				$permission['action'] = Config::getZf2libConfig('actionRead');
 			}
 			
 			// Verifica se usuario tem acesso
@@ -144,8 +136,6 @@ abstract class AbstractAjaxController extends AbstractActionController
 	
 	/**
 	 * Retorna informacoes do usuario logado
-	 * 
-	 * @return User
 	 */
 	protected function getLogin() {
 		return AccessControl::getInstance()->getLogin();
