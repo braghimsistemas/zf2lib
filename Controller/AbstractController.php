@@ -101,8 +101,8 @@ abstract class AbstractController extends AbstractActionController
 	public function initRedirect()
 	{
 		$url = "/";
-		if ($this->getModuleName() == 'clientes') {
-			$url = "/clientes";
+		if ($this->getModuleName() != 'application') {
+			$url .= $this->getModuleName();
 		}
 		
 		// @TODO

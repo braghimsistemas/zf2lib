@@ -126,6 +126,10 @@ class AccessControl
 	 */
 	public static function upperHierarchy($roleId, $module)
 	{
+		if (!$module) {
+			throw new Exception("Defina o módulo para hierarquia");
+		}
+		
 		// Cargo usado para testar
 		$roleBoClass = Config::getZf2libConfig('roleBusinessClass', $module);
 		$roleBO = new $roleBoClass();
@@ -156,6 +160,10 @@ class AccessControl
 	 */
 	public static function lowerHierarchy($roleId, $module)
 	{
+		if (!$module) {
+			throw new Exception("Defina o módulo para hierarquia");
+		}
+		
 		// Cargo usado para testar
 		$roleBoClass = Config::getZf2libConfig('roleBusinessClass', $module);
 		$roleBO = new $roleBoClass();
